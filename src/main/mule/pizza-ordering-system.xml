@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     <http:listener-config name="pizza-ordering-system-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="8081" />
+        <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
     <apikit:config name="pizza-ordering-system-config" api="resource::2bdf8907-3f36-41e5-9b95-4f7650c531c1:pizza-ordering-system:1.0.1:raml:zip:pizza-ordering-system.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <flow name="pizza-ordering-system-main">
+	<configuration-properties doc:name="Configuration properties" doc:id="d03bd4b1-02a6-49fc-9f20-f1da58ade7cf" file="config.yaml" />
+	<flow name="pizza-ordering-system-main">
         <http:listener config-ref="pizza-ordering-system-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
@@ -123,8 +124,8 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="get:\menu:pizza-ordering-system-config">
-        <ee:transform>
+    <flow name="get:\menu:pizza-ordering-system-config" doc:id="7505eaee-de90-4633-84dd-ed7afef07f2c">
+		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -151,6 +152,7 @@ output application/json
 ]]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="f4857b53-5fc0-4d85-baaa-1c22fa20a395" name="getMenuFlow"/>
     </flow>
     <flow name="get:\orders\(orderID):pizza-ordering-system-config">
         <ee:transform>
