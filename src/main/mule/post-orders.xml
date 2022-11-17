@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="9004e1cc-6b11-4a65-b54e-10783f6317f0" >
+		<salesforce:basic-connection username="prakharpathak@accelirate.sandbox" password="Randyprince@212" securityToken="RWbHixzYq3lvlJ4tjDMFFHSCj" url="https://login.salesforce.com/services/Soap/u/47.0" />
+	</salesforce:sfdc-config>
+	<flow name="post-ordersFlow" doc:id="29f4cbe8-bf8f-46a3-a0ad-8d650acf0ba5" >
+		<ee:transform doc:name="Transform Message" doc:id="0dca8d20-d3e9-4e7b-b7e5-f0512b3caef4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+[{
+  "customerName__c": payload.name,
+  "phone__c": payload.phone,
+  "pizzaCode__c": payload.pizzaCode,
+  "pizzaName__c": payload.pizzaName,
+  "size__c": payload.size,
+  "price__c": payload.price,
+  "quantity__c": payload.quantity,
+  "totalAmount__c": payload.total
+}]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create doc:name="Create" doc:id="77ecd101-759d-4383-91aa-3821f8040a4a" config-ref="Salesforce_Config" type="order_details__c"/>
+		<ee:transform doc:name="Transform Message" doc:id="769bd60d-4577-4738-ab0f-e2b05c90dbc1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+if(payload.successful == true)
+payload.items.payload.id[0]
+else
+"order is not created"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
