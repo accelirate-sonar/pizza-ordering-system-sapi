@@ -125,34 +125,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\menu:pizza-ordering-system-config" doc:id="7505eaee-de90-4633-84dd-ed7afef07f2c">
-		<ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    pizzaCode: "PIZ001",
-    pizzaName: "Margherita",
-    size: "small",
-    price: 100
-  }, 
-  {
-    pizzaCode: "PIZ004",
-    pizzaName: "Veggie Delight",
-    size: "medium",
-    price: 200
-  }, 
-  {
-    pizzaCode: "PIZ007",
-    pizzaName: "Chicken Supreme",
-    size: "large",
-    price: 300
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-		<flow-ref doc:name="Flow Reference" doc:id="f4857b53-5fc0-4d85-baaa-1c22fa20a395" name="getMenuFlow"/>
+		<flow-ref doc:name="get-menu" doc:id="f4857b53-5fc0-4d85-baaa-1c22fa20a395" name="getMenuFlow"/>
     </flow>
     <flow name="get:\orders\(orderID):pizza-ordering-system-config">
         <ee:transform>
@@ -181,15 +154,6 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\orders:application\json:pizza-ordering-system-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  orderID: 1
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="post-ordersFlow" doc:id="11c78dee-558f-420f-a283-c95b6a6c7a17" name="post-ordersFlow"/>
     </flow>
 </mule>
