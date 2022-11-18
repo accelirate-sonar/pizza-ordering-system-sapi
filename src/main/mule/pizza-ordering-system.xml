@@ -128,30 +128,7 @@ output application/json
 		<flow-ref doc:name="get-menu" doc:id="f4857b53-5fc0-4d85-baaa-1c22fa20a395" name="getMenuFlow"/>
     </flow>
     <flow name="get:\orders\(orderID):pizza-ordering-system-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="orderID">attributes.uriParams.'orderID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    orderID: 1,
-    name: "Max",
-    phone: 1231231234,
-    pizzaName: "Margherita",
-    size: "Small",
-    price: 100,
-    quantity: 2,
-    total: 200
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="get-ordersFlow" doc:id="52b68d59-5f21-4818-abcc-ff5dd199f546" name="get-ordersFlow"/>
     </flow>
     <flow name="post:\orders:application\json:pizza-ordering-system-config">
 		<flow-ref doc:name="post-ordersFlow" doc:id="11c78dee-558f-420f-a283-c95b6a6c7a17" name="post-ordersFlow"/>
