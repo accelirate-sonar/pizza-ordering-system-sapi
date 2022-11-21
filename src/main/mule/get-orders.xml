@@ -7,9 +7,9 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get-ordersFlow" doc:id="a71e2bd8-f937-40c7-9696-077f3e72f807" >
 		<salesforce:query doc:name="Query" doc:id="cf77d478-3cef-4f79-a6b3-406be3d1644c" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query ><![CDATA[select * from order_detail where Id = :Id]]></salesforce:salesforce-query>
+			<salesforce:salesforce-query ><![CDATA[select Id,customerName__c,phone__c,pizzaCode__c,pizzaName__c,size__c,price__c,quantity__c,totalAmount__c from order_details__c where Id = ':id']]></salesforce:salesforce-query>
 			<salesforce:parameters ><![CDATA[#[{
-	"Id": attributes.uriParams.orderID
+	"id": attributes.uriParams.orderID
 }]]]></salesforce:parameters>
 		</salesforce:query>
 		<ee:transform doc:name="Transform Message" doc:id="e0baff69-c8fd-4686-8144-766960dfdda9" >
@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload]]></ee:set-payload>
+payload ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>
