@@ -49,13 +49,13 @@
 			<version>1.2.3</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
-		<dependency>
+		/*<dependency>
 			<groupId>2bdf8907-3f36-41e5-9b95-4f7650c531c1</groupId>
 			<artifactId>pizza-ordering-system</artifactId>
 			<version>1.0.1</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
-		</dependency>
+		</dependency>*/
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
